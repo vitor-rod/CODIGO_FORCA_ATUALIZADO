@@ -46,7 +46,7 @@ def regras_jogo(letras_acertadas, palavra_secreta):
 
     enforcou = False # parâmetros do jogo
     acertou = False  # parâmetros do jogo
-    num_tentativas = len(palavra_secreta) # define a quantidade de chances que o player vai ter, no caso, quantidade de chances = quantidade de letras da palavra escolhida aleatoriamente
+    num_tentativas = 7 # define a quantidade de chances que o player vai ter
 
     print(letras_acertadas)
     print(f"Você tem {num_tentativas} tentativas! Boa sorte!") # apresenta ao player a quantidade de chances que ele tem
@@ -57,7 +57,7 @@ def regras_jogo(letras_acertadas, palavra_secreta):
         palpite = palpite.strip().upper()
 
         if (palpite == palavra_secreta):
-            print("Você acertou!")
+            imprime_mensagem_vencedor()
             break
 
         if (palpite in palavra_secreta):
@@ -66,27 +66,101 @@ def regras_jogo(letras_acertadas, palavra_secreta):
                 if (palpite == letra):
                     letras_acertadas[index] = palpite
                 index += 1
-
-            num_tentativas = num_tentativas - 1
-            if (num_tentativas >= 2):
-                print(f"Muito bem! Você tem mais {num_tentativas} tentativas!")
-            if (num_tentativas == 1):
-                print(f"Muita atenção, pois você só tem mais {num_tentativas} tentativa!")
-            if (num_tentativas == 0):
-                print("Você perdeu!")
-                break
-
+            print(f"A palavra secreta tem a letra {palpite}!")
             print(letras_acertadas)
 
         if (palpite not in palavra_secreta):
             num_tentativas = num_tentativas - 1
+            desenha_forca(num_tentativas)
             if (num_tentativas >= 2):
                 print(f"Essa letra não faz parte da palavra secreta! Você tem mais {num_tentativas} tentativas!")
             if (num_tentativas == 1):
                 print(f"Muita atenção, pois você só tem mais {num_tentativas} tentativa!")
             if (num_tentativas == 0):
-                print("Você perdeu!")
+                imprime_mensagem_perdedor(palavra_secreta)
                 break
+            print(letras_acertadas)
+
+def desenha_forca(num_tentativas):
+    print("  _______     ")
+    print(" |/      |    ")
+
+    if(num_tentativas >= 6):
+        print(" |      (_)   ")
+        print(" |            ")
+        print(" |            ")
+        print(" |            ")
+
+    if(num_tentativas == 5):
+        print(" |      (_)   ")
+        print(" |      \     ")
+        print(" |            ")
+        print(" |            ")
+
+    if(num_tentativas == 4):
+        print(" |      (_)   ")
+        print(" |      \|    ")
+        print(" |            ")
+        print(" |            ")
+
+    if(num_tentativas == 3):
+        print(" |      (_)   ")
+        print(" |      \|/   ")
+        print(" |            ")
+        print(" |            ")
+
+    if(num_tentativas == 2):
+        print(" |      (_)   ")
+        print(" |      \|/   ")
+        print(" |       |    ")
+        print(" |            ")
+
+    if(num_tentativas == 1):
+        print(" |      (_)   ")
+        print(" |      \|/   ")
+        print(" |       |    ")
+        print(" |      /     ")
+
+    if (num_tentativas == 0):
+        print(" |      (_)   ")
+        print(" |      \|/   ")
+        print(" |       |    ")
+        print(" |      / \   ")
+
+    print(" |            ")
+    print("_|___         ")
+    print()
+
+def imprime_mensagem_perdedor(palavra_secreta):
+    print("Poxa, você foi enforcado!")
+    print("    _______________         ")
+    print("   /               \       ")
+    print("  /                 \      ")
+    print("//                   \/\  ")
+    print("\|   XXXX     XXXX   | /   ")
+    print(" |   XXXX     XXXX   |/     ")
+    print(" |   XXX       XXX   |      ")
+    print(" |                   |      ")
+    print(" \__      XXX      __/     ")
+    print("   |\     XXX     /|       ")
+    print("   | |           | |        ")
+    print("   | I I I I I I I |        ")
+    print("   |  I I I I I I  |        ")
+    print("   \_             _/       ")
+    print("     \_         _/         ")
+    print("       \_______/           ")
+
+def imprime_mensagem_vencedor():
+    print("Parabéns, você acertou!")
+    print("       ___________     ")
+    print("      '._==_==_=_.'    ")
+    print("      .-\\:      /-.   ")
+    print("     | (|:.     |) |   ")
+    print("      '-|:.     |-'    ")
+    print("        \\::.    /     ")
+    print("         '::. .'       ")
+    print("           ) (         ")
+    print("         _.' '._       ")
+    print("        '-------'      ")
 
 if (__name__ == "__main__"):
-    jogar()
