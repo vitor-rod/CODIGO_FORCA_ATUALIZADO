@@ -1,0 +1,92 @@
+from modulefinder import packagePathMap
+from re import template
+from sqlite3 import apilevel
+from textwrap import indent
+from traceback import print_tb
+import random
+
+def jogar():
+
+    apresentacao()
+
+    palavra_secreta = gerar_palavra_secreta()
+
+    letras_acertadas = inicializa_palavra(palavra_secreta)
+
+    regras_jogo(letras_acertadas, palavra_secreta)
+
+    print(f"A palavra secreta era {palavra_secreta}.")
+
+    print("Fim de jogo!")
+
+def apresentacao():
+    print("******************************") # apresentação do jogo
+    print("***Bem vindo ao jogo FORCA!***")
+    print("******************************")  
+
+def gerar_palavra_secreta():
+    arquivo = open("palavras.txt", "r") # nesse ponto fazemos a abertura e a leitura do arquivo de palavras.
+    palavras = []
+
+    for linha in arquivo:
+        linha = linha.strip()
+        palavras.append(linha)
+
+    arquivo.close()
+
+    numero = random.randrange(0, len(palavras)) # através do random, selecionamos um número aleatório baseado no tamanho (lenght) do campo "palavras = []"
+
+    palavra_secreta = palavras[numero].upper()  # aqui, com o número selecionado e através do index, trazemos uma palavra de dentro do campo "palavras []"
+    return palavra_secreta                      # por exemplo: o número aleatório escolhido foi 10, logo, pegamos a palavra que está na posição 10 dentro do campo "palavras[]"
+
+def inicializa_palavra(palavra):
+    return ["_" for letra in palavra]
+
+def regras_jogo(letras_acertadas, palavra_secreta):
+
+    enforcou = False # parâmetros do jogo
+    acertou = False  # parâmetros do jogo
+    num_tentativas = len(palavra_secreta) # define a quantidade de chances que o player vai ter, no caso, quantidade de chances = quantidade de letras da palavra escolhida aleatoriamente
+
+    print(letras_acertadas)
+    print(f"Você tem {num_tentativas} tentativas! Boa sorte!") # apresenta ao player a quantidade de chances que ele tem
+
+    while(not enforcou and not acertou): # criação do loop
+
+        palpite = input("Dê o seu melhor palpite: ")
+        palpite = palpite.strip().upper()
+
+        if (palpite == palavra_secreta):
+            print("Você acertou!")
+            break
+
+        if (palpite in palavra_secreta):
+            index = 0
+            for letra in palavra_secreta:
+                if (palpite == letra):
+                    letras_acertadas[index] = palpite
+                index += 1
+
+            num_tentativas = num_tentativas - 1
+            if (num_tentativas >= 2):
+                print(f"Muito bem! Você tem mais {num_tentativas} tentativas!")
+            if (num_tentativas == 1):
+                print(f"Muita atenção, pois você só tem mais {num_tentativas} tentativa!")
+            if (num_tentativas == 0):
+                print("Você perdeu!")
+                break
+
+            print(letras_acertadas)
+
+        if (palpite not in palavra_secreta):
+            num_tentativas = num_tentativas - 1
+            if (num_tentativas >= 2):
+                print(f"Essa letra não faz parte da palavra secreta! Você tem mais {num_tentativas} tentativas!")
+            if (num_tentativas == 1):
+                print(f"Muita atenção, pois você só tem mais {num_tentativas} tentativa!")
+            if (num_tentativas == 0):
+                print("Você perdeu!")
+                break
+
+if (__name__ == "__main__"):
+    jogar()
